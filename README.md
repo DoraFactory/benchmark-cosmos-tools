@@ -12,7 +12,7 @@ pnpm run build
 ## How to use
 
 ```bash
-./dist/benchmarking.mjs benchmark --help                        
+$ ./dist/benchmarking.mjs benchmark --help                        
 benchmarking benchmark
 
 Benchmark cosmos tools
