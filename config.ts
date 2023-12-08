@@ -20,8 +20,8 @@ dotenv.config();
 // export const rpcEndpoint = "https://vota-testnet-rpc.dorafactory.org";
 // export const restEndpoint = "https://vota-testnet-rest.dorafactory.org";
 
-export const rpcEndpoint = "http:127.0.0.1:26657";
-export const restEndpoint = "http:127.0.0.1:1317";
+export const rpcEndpoint = "http://127.0.0.1:26657";
+export const restEndpoint = "http://127.0.0.1:1317";
 export const chainId = "vota-testnet";
 export const prefix = "dora";
 
