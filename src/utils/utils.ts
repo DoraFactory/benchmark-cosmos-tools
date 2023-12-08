@@ -52,14 +52,7 @@ export async function multiBatchSend(
     let client = await getSignerClientByWallet(signer[i]);
 
     let [{ address }] = await signer[i].getAccounts();
-    // const sendMsg: MsgSendEncodeObject = {
-    //   typeUrl: "/cosmos.bank.v1beta1.MsgSend",
-    //   value: {
-    //     fromAddress: address,
-    //     toAddress: address,
-    //     amount: amount,
-    //   },
-    // };
+
     let msgs: MsgSendEncodeObject[] = [];
     for (let i = 0; i < packageSize; i++) {
       const sendMsg: MsgSendEncodeObject = {
@@ -78,7 +71,11 @@ export async function multiBatchSend(
 
     const gasPrice = GasPrice.fromString("100000000000peaka");
     const fee = calculateFee(100000 * packageSize, gasPrice);
-    client.signAndBroadcast(address, msgs, fee);
+    try {
+      client.signAndBroadcast(address, msgs, fee);
+    } catch {
+      console.log(`error: ${i}`);
+    }
   }
 }
 
