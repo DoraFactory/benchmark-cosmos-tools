@@ -72,7 +72,7 @@ export async function multiBatchSend(
     const gasPrice = GasPrice.fromString("100000000000peaka");
     const fee = calculateFee(100000 * packageSize, gasPrice);
     try {
-      client.signAndBroadcastSync(address, msgs, fee);
+      await client.signAndBroadcastSync(address, msgs, fee);
     } catch {
       console.log(`error: ${i}`);
     }
