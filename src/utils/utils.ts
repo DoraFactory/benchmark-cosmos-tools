@@ -81,6 +81,7 @@ export async function multiBatchSend(
 }
 
 export async function benchmarkTest(
+  start: number,
   thread: number,
   packageSize: number,
   faucet: boolean | undefined
@@ -88,7 +89,7 @@ export async function benchmarkTest(
   // let thread = 10000;
   let accountAddresslist: string[] = [];
   let signerList: DirectSecp256k1HdWallet[] = [];
-  for (let i = 1; i <= thread; i++) {
+  for (let i = start; i <= thread; i++) {
     let signer = await generateAccount(i);
     let accountDetail = await signer.getAccounts();
     accountAddresslist.push(accountDetail[0].address);

@@ -6,6 +6,7 @@ import { benchmarkTest } from "../utils";
 
 type Options = {
   repeat?: number;
+  start?: number;
   thread?: number;
   size?: number;
   faucet?: boolean;
@@ -22,6 +23,11 @@ const commandModule: CommandModule<Options, Options> = {
         type: "number",
         default: 100,
         desc: "Number of repetitions",
+      },
+      start: {
+        type: "number",
+        default: 1,
+        desc: "Start account index",
       },
       thread: {
         type: "number",
@@ -41,11 +47,11 @@ const commandModule: CommandModule<Options, Options> = {
     });
   },
 
-  async handler({ repeat, thread, size, faucet }) {
+  async handler({ repeat, start, thread, size, faucet }) {
     let totalTxs = repeat * thread * size;
     console.log(`Total Txs: ${totalTxs}`);
     for (let i = 0; i < repeat; i++) {
-      await benchmarkTest(thread, size, faucet);
+      await benchmarkTest(start, thread, size, faucet);
     }
   },
 };
