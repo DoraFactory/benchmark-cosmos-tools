@@ -5,9 +5,10 @@ import type { CommandModule } from "yargs";
 import { benchmarkTest } from "../utils";
 
 type Options = {
-  repeat: number;
-  thread: number;
-  size: number;
+  repeat?: number;
+  thread?: number;
+  size?: number;
+  faucet?: boolean;
 };
 
 const commandModule: CommandModule<Options, Options> = {
@@ -32,16 +33,20 @@ const commandModule: CommandModule<Options, Options> = {
         default: 1000,
         desc: "Quantity included in each transaction",
       },
+      faucet: {
+        type: "bool",
+        default: false,
+        desc: "Faucet test account",
+      },
     });
   },
 
-  async handler({ repeat, thread, size }) {
+  async handler({ repeat, thread, size, faucet }) {
     let totalTxs = repeat * thread * size;
     console.log(`Total Txs: ${totalTxs}`);
     for (let i = 0; i < repeat; i++) {
-      await benchmarkTest(thread, size);
+      await benchmarkTest(thread, size, faucet);
     }
-    process.exit(0);
   },
 };
 

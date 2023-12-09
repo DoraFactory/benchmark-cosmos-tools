@@ -79,7 +79,11 @@ export async function multiBatchSend(
   }
 }
 
-export async function benchmarkTest(thread: number, packageSize: number) {
+export async function benchmarkTest(
+  thread: number,
+  packageSize: number,
+  faucet: boolean | undefined
+) {
   // let thread = 10000;
   let accountAddresslist: string[] = [];
   let signerList: DirectSecp256k1HdWallet[] = [];
@@ -91,7 +95,9 @@ export async function benchmarkTest(thread: number, packageSize: number) {
   }
   console.log(accountAddresslist);
 
-  await batchSend(accountAddresslist);
+  if (faucet === true) {
+    await batchSend(accountAddresslist);
+  }
 
   multiBatchSend(signerList, packageSize);
 }
