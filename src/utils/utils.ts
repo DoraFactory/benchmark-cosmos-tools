@@ -97,6 +97,8 @@ export async function benchmarkTest(
   }
   console.log(accountAddresslist);
 
+  console.log(faucet);
+  console.log(faucet === true);
   if (faucet === true) {
     await batchSend(accountAddresslist);
   }
