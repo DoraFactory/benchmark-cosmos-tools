@@ -40,7 +40,7 @@ const commandModule: CommandModule<Options, Options> = {
         desc: "Quantity included in each transaction",
       },
       faucet: {
-        type: "bool",
+        type: "boolean",
         default: false,
         desc: "Faucet test account",
       },
