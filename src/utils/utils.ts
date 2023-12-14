@@ -15,31 +15,33 @@ import { coins, makeCosmoshubPath } from "@cosmjs/amino";
 import { AuthInfo, TxBody, TxRaw } from "cosmjs-types/cosmos/tx/v1beta1/tx";
 
 export async function batchSend(recipients: string[]) {
+  const batchSize = 1500;
   let client = await getSignerClient();
 
   let signerAddr = "dora1t58t7azqzq26406uwehgnfekal5kzym3m9lz4k";
 
-  let msgs: MsgSendEncodeObject[] = [];
-
-  // const recipient = "dora12xkk5rrk6ex2j0yt6kelsqs6yg4nghax7fq924";
   const amount = coins("20000000000000000000", "peaka");
-  for (let i = 0; i < recipients.length; i++) {
-    const sendMsg: MsgSendEncodeObject = {
-      typeUrl: "/cosmos.bank.v1beta1.MsgSend",
-      value: {
-        fromAddress: signerAddr,
-        toAddress: recipients[i],
-        amount: amount,
-      },
-    };
-
-    msgs.push(sendMsg);
-  }
 
   const gasPrice = GasPrice.fromString("100000000000peaka");
-  const fee = calculateFee(50000 * msgs.length, gasPrice);
-  const result = await client.signAndBroadcast(signerAddr, msgs, fee);
-  console.log(result.transactionHash);
+
+  for (let i = 0; i < recipients.length; i += batchSize) {
+    const batchRecipients = recipients.slice(i, i + batchSize);
+
+    let msgs: MsgSendEncodeObject[] = batchRecipients.map((recipient) => {
+      return {
+        typeUrl: "/cosmos.bank.v1beta1.MsgSend",
+        value: {
+          fromAddress: signerAddr,
+          toAddress: recipient,
+          amount: amount,
+        },
+      };
+    });
+
+    const fee = calculateFee(50000 * msgs.length, gasPrice);
+    const result = await client.signAndBroadcast(signerAddr, msgs, fee);
+    console.log(`Faucet tx: ${result.transactionHash}`);
+  }
 }
 
 export async function multiBatchSend(
